@@ -33,9 +33,12 @@ def scrapy_xueqiu(needSaveToCsv=False):
     if api_request.status_code != 200:
         print("api_request.status_code:", api_request.status_code)
         return
-
-    json_api_request = json.loads(api_request.text)
-    list_data = json_api_request['list']
+    try:
+        json_api_request = json.loads(api_request.text)
+        list_data = json_api_request['list']
+    except:
+        print("json load error!")
+        return
 
     senta = SentaFactory(model="snownlp")
 
