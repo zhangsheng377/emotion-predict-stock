@@ -2,12 +2,11 @@
 from __future__ import unicode_literals
 import random
 
-from . import agents
-
 
 class Agents(object):
 
     def __init__(self):
+        from . import agents
         self._agents = agents.agents
 
     @property

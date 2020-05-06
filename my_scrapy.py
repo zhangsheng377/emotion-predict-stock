@@ -26,9 +26,14 @@ def scrapy_xueqiu(needSaveToCsv=False):
     try:
         session.cookies = Cookies(headers=headers).cookie
         api_request = session.get(url=api_url, headers=headers, timeout=10)
-    except:
-        print("session error!")
-        return
+    except Exception as e:
+        print("session error! %s" % e)
+        try:
+            session.cookies = Cookies(headers=headers).new_cookie()
+            api_request = session.get(url=api_url, headers=headers, timeout=10)
+        except Exception as e:
+            print("new session error! %s" % e)
+            return
 
     if api_request.status_code != 200:
         print("api_request.status_code:", api_request.status_code)
