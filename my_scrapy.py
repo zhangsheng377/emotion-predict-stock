@@ -11,6 +11,7 @@ import random
 import json
 import re
 import pandas as pd
+import sched
 
 
 api_url = 'https://xueqiu.com/statuses/search.json?sort=time&source=all&q=01810&count=10&page=1'
@@ -84,14 +85,15 @@ def scrapy_xueqiu(needSaveToCsv=False):
         df.to_csv("data_pd.csv")
 
 
-def timedTask(gapSecond=1200):
-    while True:
-        scrapy_xueqiu(needSaveToCsv=True)
-        sleepSecond = gapSecond + random.randint(0, 300)
-        print(time.asctime(time.localtime(time.time())),
-              "    sleep {} s".format(sleepSecond))
-        time.sleep(sleepSecond)
+def scrapy_xueqiu_task(scheduler, gapSecond=1200):
+    scrapy_xueqiu(needSaveToCsv=True)
+    sleepSecond = gapSecond + random.randint(0, 300)
+    print(time.asctime(time.localtime(time.time())),
+          "    sleep {} s".format(sleepSecond))
+    scheduler.enter(sleepSecond, 0, scrapy_xueqiu_task, (scheduler,))
 
 
 if __name__ == '__main__':
-    timedTask()
+    scheduler = sched.scheduler(time.time, time.sleep)
+    scheduler.enter(0, 0, scrapy_xueqiu_task, (scheduler,))
+    scheduler.run()
