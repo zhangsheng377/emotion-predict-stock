@@ -8,6 +8,9 @@ def DataBaseFactory(database_name, sheet_name, model="pymongo"):
     if model == "pymongo":
         from .database_pymongo import DataBasePyMongo
         return DataBasePyMongo(database_name=database_name, sheet_name=sheet_name)
+    elif model == "sqlite3":
+        from .database_sqlite3 import DataBaseSqlite3
+        return DataBaseSqlite3(database_name=database_name, sheet_name=sheet_name)
     else:
         raise ValueError('model name: {} can not find.'.format(model))
         pass

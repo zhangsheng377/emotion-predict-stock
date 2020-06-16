@@ -1,2 +1,5 @@
 _COOKIES
 *.pyc
+.ipynb_checkpoints/*
+*/.ipynb_checkpoints/*
+venv/*

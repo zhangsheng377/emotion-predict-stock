@@ -20,7 +20,7 @@ class DataBasePyMongo(DataBase):
         return False
 
     def find(self, filter=None, sort=None):
-        return self._sheet.find(filter=filter, sort=sort)
+        return list(self._sheet.find(filter=filter, sort=sort))
 
     def find_one(self, filter=None, sort=None):
         return self._sheet.find_one(filter=filter, sort=sort)

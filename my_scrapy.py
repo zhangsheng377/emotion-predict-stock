@@ -49,7 +49,7 @@ def scrapy_xueqiu(needSaveToCsv=False):
     senta = SentaFactory(model="snownlp")
 
     dataSheet = DataBaseFactory(
-        database_name="xueqiu", sheet_name="comments", model="pymongo")
+        database_name="xueqiu", sheet_name="comments", model="sqlite3")
 
     for comment in list_data:
         sub_text = re.sub(u"<.*?>|\\$.*?\\$|\\&nbsp\\;", "", comment['text'])
@@ -80,7 +80,7 @@ def scrapy_xueqiu(needSaveToCsv=False):
             print(comment['id'], '已经存在于数据库\n')
 
     if needSaveToCsv:
-        df = pd.DataFrame(list(dataSheet.find(sort=[('_id', -1)])))
+        df = pd.DataFrame(dataSheet.find(sort=[('_id', -1)]))
         df.set_index(keys='_id', inplace=True)
         df.to_csv("data_pd.csv")
 
